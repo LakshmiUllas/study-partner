@@ -1,0 +1,305 @@
+ function loadSessions() {
+      sessionsDiv.inn<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Buddy – Your Human Study Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Human-friendly font -->
+  <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #f8f6f0;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    header {
+      background: #f3e3d3;
+      padding: 2rem 1rem 1rem 1rem;
+      text-align: center;
+      border-bottom: 2px dashed #b68d6c;
+      position: relative;
+    }
+    header svg {
+      width: 54px;
+      vertical-align: middle;
+      margin-bottom: -12px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin: 0.2em 0 0.5em 0;
+      letter-spacing: 1px;
+      color: #7c4f26;
+    }
+    main {
+      max-width: 480px;
+      margin: 2rem auto;
+      background: #fff9f2;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(200,160,110,0.06);
+      padding: 2rem 1.2rem 1.5rem 1.2rem;
+      border: 2px solid #f3e3d3;
+    }
+    label, input, textarea, select, button {
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    form {
+      display: grid;
+      gap: 0.7em;
+      margin-bottom: 1.6em;
+    }
+    input, select, textarea {
+      padding: 0.5em;
+      border: 1.5px solid #d3bfa7;
+      border-radius: 5px;
+      background: #fff;
+      transition: border 0.2s;
+    }
+    input:focus, textarea:focus {
+      border-color: #b68d6c;
+      outline: none;
+    }
+    button {
+      background: #b68d6c;
+      color: #fff;
+      border: none;
+      padding: 0.55em 1.1em;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.2em;
+      font-weight: 700;
+      box-shadow: 0 2px 6px #e2ccae66;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #7c4f26;
+    }
+    .sessions {
+      margin-bottom: 1.5em;
+    }
+    .session {
+      background: #f3e3d3;
+      margin-bottom: 0.8em;
+      padding: 0.7em 1em;
+      border-radius: 6px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-left: 4px solid #b68d6c;
+      position: relative;
+      box-shadow: 1px 1px 3px #e2ccae22;
+    }
+    .session-details {
+      flex: 1;
+      margin-right: 1.2em;
+    }
+    .session strong {
+      display: inline-block;
+      min-width: 90px;
+      color: #7c4f26;
+    }
+    .delete-btn {
+      background: #ffecec;
+      color: #b03030;
+      border: 1px dashed #d3bfa7;
+      padding: 0.25em 0.7em;
+      font-size: 0.95em;
+      border-radius: 5px;
+      margin-left: 0.5em;
+      margin-top: 0.4em;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .delete-btn:hover {
+      background: #ffcfcf;
+    }
+    .notes-section {
+      margin-bottom: 2em;
+    }
+    .notes-section textarea {
+      width: 100%;
+      height: 60px;
+      resize: vertical;
+    }
+    .notes-section button {
+      margin-top: 0.3em;
+      background: #7c4f26;
+    }
+    .save-download {
+      display: flex;
+      gap: 1.2em;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1.4em;
+    }
+    .footer {
+      margin: 2.5em auto 1.1em auto;
+      text-align: center;
+      font-size: 1em;
+      color: #a98761;
+      opacity: 0.95;
+    }
+    .footer svg {
+      width: 18px;
+      vertical-align: middle;
+    }
+    @media (max-width: 600px) {
+      main {
+        margin: 1.1rem 0.2rem;
+        padding: 1.2rem 0.2rem 1rem 0.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Handdrawn book SVG -->
+    <svg viewBox="0 0 54 54" fill="none">
+      <rect x="3" y="6" width="48" height="42" rx="7" fill="#fff9f2" stroke="#b68d6c" stroke-width="2"/>
+      <path d="M10 10 Q27 20 44 10" stroke="#b68d6c" stroke-width="1.2" fill="none"/>
+      <rect x="9" y="14" width="36" height="27" rx="3" fill="#f3e3d3"/>
+    </svg>
+    <h1>Study Buddy</h1>
+    <div style="font-size:1.1em; color:#a98761;">
+      Your cozy, human-made study tracker. No logins. Just you, your goals, and a little encouragement!
+    </div>
+  </header>
+  <main>
+    <div class="notes-section">
+      <label for="notes"><strong>Personal Note:</strong></label>
+      <textarea id="notes" placeholder="Type a note to future you..."></textarea>
+      <button onclick="saveNotes()">Save Note</button>
+      <span id="saveMsg" style="color:#b68d6c; margin-left:0.5em;"></span>
+    </div>
+    <form id="study-form" autocomplete="off">
+      <label>
+        Subject:
+        <input type="text" id="subject" required maxlength="32" placeholder="e.g. Math, History"/>
+      </label>
+      <label>
+        Date:
+        <input type="date" id="date" required/>
+      </label>
+      <label>
+        Duration (minutes):
+        <input type="number" id="duration" required min="1" max="600" step="1" value="30"/>
+      </label>
+      <button type="submit">Add Study Session</button>
+    </form>
+    <section class="sessions" id="sessions">
+      <!-- Sessions will be listed here -->
+    </section>
+    <div class="save-download">
+      <button onclick="downloadData()">Download My Data</button>
+      <span style="color:#b68d6c;">(Private &amp; free – stays on your device!)</span>
+    </div>
+  </main>
+  <div class="footer">
+    <span>Made by a real human <svg viewBox="0 0 18 17" fill="none"><path d="M9 15C9 15 2 9.5 2 5.5C2 2.5 5.5 2 9 7C12.5 2 16 2.5 16 5.5C16 9.5 9 15 9 15Z" stroke="#b68d6c" stroke-width="1.2" fill="#ffecec"/></svg> – No AI here!</span>
+  </div>
+  <script>
+    // Storage keys
+    const SESSIONS_KEY = 'study_sessions';
+    const NOTES_KEY = 'study_notes';
+
+    // Elements
+    const sessionsDiv = document.getElementById('sessions');
+    const notesArea = document.getElementById('notes');
+    const saveMsg = document.getElementById('saveMsg');
+
+    // Restore data
+erHTML = '';
+      let sessions = [];
+      try {
+        sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY)) || [];
+      } catch { sessions = []; }
+      if (sessions.length === 0) {
+        sessionsDiv.innerHTML = `<div style="color:#a98761; text-align:center; margin-top:1em;">No sessions yet. Add your first!</div>`;
+        return;
+      }
+      sessions.sort((a,b)=>new Date(b.date)-new Date(a.date));
+      sessions.forEach((s, idx) => {
+        const div = document.createElement('div');
+        div.className = 'session';
+        div.innerHTML = `
+          <div class="session-details">
+            <strong>${s.subject}</strong> <br>
+            <span style="color:#7c4f26;">${s.date} | ${s.duration} min</span>
+          </div>
+          <button class="delete-btn" onclick="deleteSession(${idx})" title="Delete session">Delete</button>
+        `;
+        sessionsDiv.appendChild(div);
+      });
+    }
+
+    function loadNotes() {
+      notesArea.value = localStorage.getItem(NOTES_KEY) || '';
+    }
+
+    // Save note
+    function saveNotes() {
+      localStorage.setItem(NOTES_KEY, notesArea.value);
+      saveMsg.textContent = "✓ Saved!";
+      setTimeout(()=>saveMsg.textContent='', 1500);
+    }
+
+    // Add session
+    document.getElementById('study-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const subject = document.getElementById('subject').value.trim();
+      const date = document.getElementById('date').value;
+      const duration = parseInt(document.getElementById('duration').value, 10);
+      if(!subject || !date || !duration) return;
+      let sessions = [];
+      try {
+        sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY)) || [];
+      } catch { sessions = []; }
+      sessions.push({subject, date, duration});
+      localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+      this.reset();
+      loadSessions();
+    });
+
+    // Delete session
+    function deleteSession(idx) {
+      let sessions = [];
+      try {
+        sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY)) || [];
+      } catch { sessions = []; }
+      sessions.splice(idx,1);
+      localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+      loadSessions();
+    }
+    window.deleteSession = deleteSession; // Expose to HTML
+
+    // Download data
+    function downloadData() {
+      let sessions = [];
+      try {
+        sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY)) || [];
+      } catch { sessions = []; }
+      const notes = localStorage.getItem(NOTES_KEY) || '';
+      let data = `Your Study Sessions:\n`;
+      sessions.forEach((s,i) => {
+        data += `${i+1}. [${s.date}] ${s.subject} – ${s.duration} min\n`;
+      });
+      data += `\nPersonal Note:\n${notes}\n`;
+      const blob = new Blob([data], {type:"text/plain"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "study_buddy_data.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    window.downloadData = downloadData;
+
+    // On load
+    loadSessions();
+    loadNotes();
+  </script>
+</body>
+</html>
